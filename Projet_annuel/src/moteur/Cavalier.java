@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Cavalier extends Pieces {
 	
-	public Cavalier(int PositionX, int PositionY, Type Type, Couleur Couleur, String name) {
+	public Cavalier(int PositionX, int PositionY, Type Type, Couleur Couleur) {
 		super(PositionX, PositionY, Type, Couleur, "C");
 	}
 

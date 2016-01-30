@@ -9,7 +9,7 @@ public abstract class Pieces {
 	private Couleur Couleur;
 	private String name;
 	
-	public Pieces (int PositionX, int PositionY, Type Type, Couleur Couleur,String name) {
+	public Pieces (int PositionX, int PositionY, Type Type, Couleur Couleur, String name) {
 		this.PositionX = PositionX;
 		this.PositionY = PositionY;
 		this.Type =Type;
@@ -17,7 +17,7 @@ public abstract class Pieces {
 		
 		this.name = name;
 		if(name.length() == 1)
-			if(this.Couleur == Couleur.Blanc) this.name += 'R';
+			if(this.Couleur == Couleur.Rouge) this.name += 'R';
 			else this.name += 'N';
 	}
 
@@ -64,9 +64,9 @@ public abstract class Pieces {
 	}
 	
 	public void PrisePiece(List<Pieces> ListePiece, Plateau plateau, Pieces Autre){
-		if(this.PieceEnnemie(plateau.LireCase(Autre.getPositionX(), Autre.getPositionY()))){
-			System.out.println(this.PieceEnnemie(plateau.LireCase(Autre.getPositionX(), Autre.getPositionY())));
-			ListePiece.remove(ListePiece.indexOf(plateau.LireCase(Autre.getPositionX(), Autre.getPositionY())));
+		if(this.PieceEnnemie(plateau.getCase(Autre.getPositionX(), Autre.getPositionY()))){
+			System.out.println(this.PieceEnnemie(plateau.getCase(Autre.getPositionX(), Autre.getPositionY())));
+			ListePiece.remove(ListePiece.indexOf(plateau.getCase(Autre.getPositionX(), Autre.getPositionY())));
 		}
 	}
 	
@@ -80,7 +80,7 @@ public abstract class Pieces {
 	
 	protected List<Pieces> PossibilitePrisePiece(List<Pieces> ListeCoup, Plateau plateau) {
 		for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getCouleur() == ListeCoup.get(i).getCouleur()){
+			if(plateau.getCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getCouleur() == ListeCoup.get(i).getCouleur()){
 				ListeCoup.remove(i);
 				i--;
 			}

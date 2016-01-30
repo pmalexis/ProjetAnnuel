@@ -1,7 +1,5 @@
 package Controleur;
 
-import java.util.List;
-
 import moteur.Pieces;
 import moteur.Plateau;
 
@@ -11,15 +9,10 @@ public class Controleur {
 	
 	public Controleur() {
 		plateau = new Plateau();
-		List<Pieces> ListePiece = plateau.InitialisationPlateau();
-		plateau.RemplirPlateau();
-		List<Pieces> ListeCoup = null;
-		
-		ListeCoup = ListePiece.get(0).GestionLCP(ListeCoup, plateau);
 	}
 	
 	public String[][] getTabChess() {
-		Pieces[][] tabPion = this.plateau.getPlateau();
+		Pieces[][] tabPion  = this.plateau.getPlateau();
 		String[][] tabTempo = new String[tabPion.length][tabPion[0].length];
 		
 		for(int i=0;i<tabTempo.length;i++)
