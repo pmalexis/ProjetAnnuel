@@ -1,5 +1,6 @@
 package moteur;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Pieces {
@@ -8,6 +9,7 @@ public abstract class Pieces {
 	private Type Type;
 	private Couleur Couleur;
 	private String name;
+	protected LinkedList<Coup> ListCoup = new LinkedList<Coup>();
 	
 	public Pieces (int PositionX, int PositionY, Type Type, Couleur Couleur, String name) {
 		this.PositionX = PositionX;
@@ -41,10 +43,9 @@ public abstract class Pieces {
 	}
 	
 	public abstract List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau);
-	public abstract List<Coup> ListeCoup();
 	
 	public List<Coup> GestionLCP(List<Coup> ListeCoup, Plateau plateau){
-		ListeCoup = this.ListeCoup();
+		ListeCoup = this.ListCoup;
 		ListeCoup = this.ListeCoupPossible(ListeCoup, plateau);
 		return ListeCoup;
 	}

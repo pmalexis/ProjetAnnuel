@@ -1,12 +1,13 @@
 package moteur;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Garde extends Pieces {
 	
 	public Garde (int PositionX, int PositionY, Type Type, Couleur Couleur) {
 		super(PositionX, PositionY, Type, Couleur, "G");
+		
+		AjoutCoups();
 	}
 	
 	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
@@ -24,13 +25,10 @@ public class Garde extends Pieces {
 		return ListeCoup;
 	}
 
-	public List<Coup> ListeCoup() {
-		LinkedList<Coup> ListeCoup = new LinkedList<Coup>();
-		
-		ListeCoup.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + Cardinal.NordEst.getPosY()));
-		ListeCoup.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + Cardinal.SudEst.getPosY()));
-		ListeCoup.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + Cardinal.NordOuest.getPosY()));
-		ListeCoup.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + Cardinal.SudOuest.getPosY()));
-		return ListeCoup;
+	public void AjoutCoups() {
+		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + Cardinal.NordEst.getPosY()));
+		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + Cardinal.SudEst.getPosY()));
+		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + Cardinal.NordOuest.getPosY()));
+		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + Cardinal.SudOuest.getPosY()));
 	}
 }

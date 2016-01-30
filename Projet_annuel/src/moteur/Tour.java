@@ -1,12 +1,13 @@
 package moteur;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Tour extends Pieces {
 	
 	public Tour (int PositionX, int PositionY, Type Type, Couleur Couleur) {
 		super(PositionX, PositionY, Type, Couleur, "T");
+		
+		AjoutCoups();
 	}
 	
 	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
@@ -24,25 +25,21 @@ public class Tour extends Pieces {
 		return ListeCoup;
 	}
 
-	public List<Coup> ListeCoup() {
-		LinkedList<Coup> ListeCoup = new LinkedList<Coup>();
-		
+	public void AjoutCoups() {		
 		for(int i = this.getPositionX() + 1; i < 9; i++){
-			ListeCoup.add(new Coup(i, this.getPositionY()));
+			ListCoup.add(new Coup(i, this.getPositionY()));
 		}
 		
 		for(int i = this.getPositionX() - 1; i >= 0; i--){
-			ListeCoup.add(new Coup(i, this.getPositionY()));
+			ListCoup.add(new Coup(i, this.getPositionY()));
 		}
 		
 		for(int i = this.getPositionY() + 1; i < 10; i++){
-			ListeCoup.add(new Coup(this.getPositionX(), i));
+			ListCoup.add(new Coup(this.getPositionX(), i));
 		}
 		
 		for(int i = this.getPositionY() - 1; i >= 0; i--){
-			ListeCoup.add(new Coup(this.getPositionX(), i));
+			ListCoup.add(new Coup(this.getPositionX(), i));
 		}
-		
-		return ListeCoup;
 	}
 }

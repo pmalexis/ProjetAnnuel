@@ -12,7 +12,7 @@ public class Plateau {
 	 */
 	public Plateau(){
 		
-		this.plateau = new Pieces[this.LARGEUR][this.HAUTEUR];
+		this.plateau = new Pieces[this.HAUTEUR][this.LARGEUR];
  
 		this.initialisationPlateau();
 	}
@@ -46,12 +46,8 @@ public class Plateau {
 									{ "  ", "BR", "  ", "  ", "  ", "  ", "  ", "BR", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };
-		
-		/*for(int i = 0; i < this.LARGEUR; i++)
-			for(int j = 0; j < this.HAUTEUR; j++)
-				this.plateau[i][j] = new SansPiece(i, j, Type.SansPiece, Couleur.Aucune);*/
 			
-		for(int i = 0; i < plateauTempo.length-1; i++)
+		for(int i = 0; i < plateauTempo.length; i++)
 			for(int j = 0; j < plateauTempo[0].length; j++) {
 				Pieces p;
 				Couleur c;
@@ -60,14 +56,14 @@ public class Plateau {
 				else c = Couleur.Rouge;
 				
 				switch(plateauTempo[i][j].charAt(0)) {
-					case 'T' : p = new Tour       (i, j, Type.Tour      , c);
-					case 'C' : p = new Cavalier   (i, j, Type.Cavalier  , c);
-					case 'E' : p = new Elephant   (i, j, Type.Elephant  , c);
-					case 'G' : p = new Garde      (i, j, Type.Garde     , c);
-					case 'R' : p = new Roi        (i, j, Type.Roi       , c);
-					case 'B' : p = new Bombardier (i, j, Type.Bombardier, c);
-					case 'P' : p = new Pion       (i, j, Type.Pion      , c);
-					default : p = new SansPiece   (i, j, Type.SansPiece,  c);
+					case 'T' : p = new Tour       (i, j, Type.Tour      , c); break;
+					case 'C' : p = new Cavalier   (i, j, Type.Cavalier  , c); break;
+					case 'E' : p = new Elephant   (i, j, Type.Elephant  , c); break;
+					case 'G' : p = new Garde      (i, j, Type.Garde     , c); break;
+					case 'R' : p = new Roi        (i, j, Type.Roi       , c); break;
+					case 'B' : p = new Bombardier (i, j, Type.Bombardier, c); break;
+					case 'P' : p = new Pion       (i, j, Type.Pion      , c); break;
+					default  : p = new SansPiece  (i, j, Type.SansPiece,  Couleur.Aucune);
 				}
 				
 				this.plateau[i][j] = p;
@@ -77,18 +73,16 @@ public class Plateau {
 	
 	
 	/*
-	 * Retounre un string qui est le plateau actuel du xiangqi
+	 * Retourne un string qui est le plateau actuel du xiangqi
 	 */
 	public String toString(){
 		
 		String str = "";
 		
-		for(int i = 0; i < this.HAUTEUR-1; i++){
-			str += "| ";
+		for(int i = 0; i < this.HAUTEUR; i++){
+			str += "|";
 			for(int j = 0; j < this.LARGEUR; j++){
-				if(this.plateau[i][j] != null)
-					str += this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
-				else str += " .. |";
+				str += " " + this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
 			}
 			str += "\n";
 		}

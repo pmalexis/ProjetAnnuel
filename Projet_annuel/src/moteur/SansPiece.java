@@ -9,15 +9,7 @@ public class SansPiece extends Pieces {
 	}
 
 	@Override
-	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
-		// TODO Auto-generated method stub
+	public List<Coup> ListeCoupPossible(List<Coup> ListCoup, Plateau plateau) {
 		return null;
 	}
-
-	@Override
-	public List<Coup> ListeCoup() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
