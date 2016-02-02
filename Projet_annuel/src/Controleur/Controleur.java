@@ -1,5 +1,8 @@
-package Controleur;
+package controleur;
 
+import java.util.List;
+
+import moteur.Coup;
 import moteur.Pieces;
 import moteur.Plateau;
 import moteur.Type;
@@ -25,5 +28,9 @@ public class Controleur {
 
 	public Type getType(int[] tab) {
 		return this.plateau.getCase(tab[0], tab[1]).getType();
+	}
+
+	public List<Coup> getListCoupPossible(int i, int j) {
+		return this.plateau.getListCoupPossible(i,j);
 	}
 }

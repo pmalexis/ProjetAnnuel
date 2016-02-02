@@ -1,7 +1,10 @@
-package Ihm;
+package ihm;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,8 +12,11 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-import Controleur.Controleur;
+import java.util.List;
+
+import controleur.Controleur;
 import moteur.Type;
+import moteur.Coup;
 
 /*
  * Penser à mettre les images en fond transparent !!!
@@ -28,6 +34,8 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 	private int[] tabMouse;
 
 	private boolean firstClick = true;
+
+	private List<Coup> listCoupPossible = null;
 	
 	/*
 	 * Controleur
@@ -104,6 +112,18 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 					imageTempo = image;
 				}
 				
+				g.setColor(Color.GREEN);
+				Graphics2D g2d = (Graphics2D)g;
+				Composite original = g2d.getComposite();
+				Composite translucent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+				g2d.setComposite(translucent);
+				if(this.listCoupPossible != null)
+					for(int l=0;l<this.listCoupPossible.size();l++)
+						if(this.listCoupPossible.get(l).getPosX() == i && this.listCoupPossible.get(l).getPosY() == j)
+							g.fillOval(posX-((getWidth()/(tailleX))/2), posY-((getHeight()/(tailleY+2))/2), getWidth()/(tailleX), getHeight()/(tailleY+2));
+				g.setColor(Color.BLACK);
+				g2d.setComposite(original);
+				
 				posX += this.getWidth()/(tailleX);
 			}
 			posY += this.getHeight()/(tailleY+2);
@@ -166,6 +186,14 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 				this.firstClick = true;
 				//this.tabCoord[0] = -1;
 			}
+			
+			if(!this.firstClick) {
+				this.listCoupPossible  = this.controleur.getListCoupPossible(this.tabCoord[0], this.tabCoord[1]);
+				
+				for(int i=0;i<this.listCoupPossible.size();i++)
+					System.out.println("[" + this.listCoupPossible.get(i).getPosX() + "," + this.listCoupPossible.get(i).getPosY() + "]");
+				System.out.println("--------");
+			}
 		}	
 		else {
 			int[] tabCoordFinal = this.caseChoisi(me.getX(), me.getY());
@@ -173,6 +201,7 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 			//selon bool tab à -1
 			this.tabCoord[0] = -1;
 			this.firstClick = true;
+			this.listCoupPossible = null;
 		}
 		
 		if(this.tabCoord[0] > -1)

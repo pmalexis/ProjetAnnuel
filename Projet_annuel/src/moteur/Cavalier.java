@@ -10,19 +10,71 @@ public class Cavalier extends Pieces {
 		AjoutCoups();
 	}
 
-	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
+	public List<Coup> ListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
 		
-		/*for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getType() != Type.SansPiece){
-				for (int j = i+1; j < ListeCoup.size(); i++){
-					
-				}
-				/*if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getCouleur() == ListeCoup.get(i).getCouleur()){
-					
-				}//
+		//Supprime tous les coups hors plateau
+		for(int i=0;i<listeCoup.size();i++) {
+			if(listeCoup.get(i).getPosX() < 0 || listeCoup.get(i).getPosY() < 0 || listeCoup.get(i).getPosX() > plateau.getHauteur() || listeCoup.get(i).getPosY() > plateau.getLargeur()) {
+				listeCoup.remove(i);
+				i--;
 			}
-		}*/	
-		return ListeCoup;
+		}
+		
+		
+		//Supprime tous les coups avec une pièce entre le cavalier et sa destination
+		for(int i=0;i<listeCoup.size();i++) {
+			boolean bool = false;
+			
+			if(listeCoup.get(i).getPosX() > this.getPositionX()) {
+				if(listeCoup.get(i).getPosY() > this.getPositionY()) {
+					if(listeCoup.get(i).getPosX()-1 == this.getPositionX() && listeCoup.get(i).getPosY()-2 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX(), this.getPositionY()+1).getType() != Type.SansPiece) bool = true;
+					}
+					else if(listeCoup.get(i).getPosX()-2 == this.getPositionX() && listeCoup.get(i).getPosY()-1 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX()+1, this.getPositionY()).getType() != Type.SansPiece) bool = true;
+					}
+				}
+				else {
+					if(listeCoup.get(i).getPosX()-1 == this.getPositionX() && listeCoup.get(i).getPosY()+2 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX(), this.getPositionY()-1).getType() != Type.SansPiece) bool = true;
+					}
+					else if(listeCoup.get(i).getPosX()-2 == this.getPositionX() && listeCoup.get(i).getPosY()+1 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX()+1, this.getPositionY()).getType() != Type.SansPiece) bool = true;
+					}
+				}
+			}
+			else {
+				if(listeCoup.get(i).getPosY() > this.getPositionY()) {
+					if(listeCoup.get(i).getPosX()+1 == this.getPositionX() && listeCoup.get(i).getPosY()-2 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX(), this.getPositionY()+1).getType() != Type.SansPiece) bool = true;
+					}
+					else if(listeCoup.get(i).getPosX()+2 == this.getPositionX() && listeCoup.get(i).getPosY()-1 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX()-1, this.getPositionY()).getType() != Type.SansPiece) bool = true;
+					}
+				}
+				else {
+					if(listeCoup.get(i).getPosX()+1 == this.getPositionX() && listeCoup.get(i).getPosY()+2 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX(), this.getPositionY()-1).getType() != Type.SansPiece) bool = true;
+					}
+					else if(listeCoup.get(i).getPosX()+2 == this.getPositionX() && listeCoup.get(i).getPosY()+1 == this.getPositionY()) {
+						if(plateau.getCase(this.getPositionX()-1, this.getPositionY()).getType() != Type.SansPiece) bool = true;
+					}
+				}
+			}
+				
+			if(bool) {
+				listeCoup.remove(i);
+				i--;
+			}
+		}
+		
+		//affiche pour test
+		for(int i=0; i<listeCoup.size();i++) {
+			System.out.println("[" + listeCoup.get(i).posX + "," + listeCoup.get(i).posY + "]");
+		}
+		System.out.println("------------------");
+		
+		return listeCoup;
 	}
 
 	public void AjoutCoups() {
@@ -35,15 +87,4 @@ public class Cavalier extends Pieces {
 		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + (2 * Cardinal.SudEst.getPosY())));
 		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + (2 * Cardinal.SudOuest.getPosY())));
 	}	
-	
-	private List<Coup> PieceAuMilieu(List<Coup> ListeCoup, Plateau plateau){
-		
-		/*for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.getCase(ListeCoup.get(i).getPosX() + ListeCoup.get(i).getCardinal().Opposee().getPosX(), ListeCoup.get(i).getPositionY() + ListeCoup.get(i).getCardinal().Opposee().getPosY()).getType() != Type.SansPiece){
-				ListeCoup.remove(i);
-			}
-		}*/
-		
-		return ListeCoup;
-	}
 }

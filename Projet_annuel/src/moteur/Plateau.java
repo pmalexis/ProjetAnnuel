@@ -1,5 +1,7 @@
 package moteur;
 
+import java.util.List;
+
 public class Plateau {
 
 	private final int LARGEUR = 9;
@@ -36,6 +38,7 @@ public class Plateau {
 	 */
 	public void initialisationPlateau(){
 		
+		/*
 		String[][] plateauTempo = { { "TN", "CN", "EN", "GN", "RN", "GN", "EN", "CN", "TN" }, 
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "BN", "  ", "  ", "  ", "  ", "  ", "BN", "  " },
@@ -45,7 +48,18 @@ public class Plateau {
 									{ "PR", "  ", "PR", "  ", "PR", "  ", "PR", "  ", "PR" },
 									{ "  ", "BR", "  ", "  ", "  ", "  ", "  ", "BR", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };
+									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };*/
+		
+		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "CN", "  ", "BN", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "ER", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " } };
 			
 		for(int i = 0; i < plateauTempo.length; i++)
 			for(int j = 0; j < plateauTempo[0].length; j++) {
@@ -68,9 +82,19 @@ public class Plateau {
 				
 				this.plateau[i][j] = p;
 			}
-				
 	}
 	
+	public int getHauteur() {
+		return this.HAUTEUR;
+	}	
+	
+	public int getLargeur() {
+		return this.LARGEUR;
+	}	
+	
+	public List<Coup> getListCoupPossible(int i, int j) {
+		return this.plateau[i][j].ListeCoupPossible(this.plateau[i][j].getListCoup(), this);
+	}
 	
 	/*
 	 * Retourne un string qui est le plateau actuel du xiangqi
@@ -87,5 +111,5 @@ public class Plateau {
 			str += "\n";
 		}
 		return str;
-	}	
+	}
 }
