@@ -17,4 +17,12 @@ public class Coup {
 	public int getPosY() {
 		return posY;
 	}
+	
+	public boolean equals (Coup c) {
+		return (posX == c.posX && posY == c.posY);
+	}
+	
+	public String toString() {
+		return "pos : {"+ posX + "; " + posY + "}";
+	}
 }

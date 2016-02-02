@@ -10,25 +10,47 @@ public class Garde extends Pieces {
 		AjoutCoups();
 	}
 	
-	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
-		
-		/*for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getType() != Type.SansPiece){
-				for (int j = i+1; j < ListeCoup.size(); i++){
-					
+	public List<Coup> getListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {		
+		if (this.getCouleur() == Couleur.Noir) {
+			for (int i = listeCoup.size()-1; i >= 0; i--) {
+				Coup c = listeCoup.get(i);
+				if (c.getPosX() > 9 || c.getPosX() < 0 || c.getPosY() > 10 || c.getPosY() < 0) {
+					listeCoup.remove(i);
+				} else {
+					if (c.getPosX() >= 3 || c.getPosY() <= 2 || c.getPosY() >= 6) {
+						listeCoup.remove(i);
+					} else if (plateau.getCase(c.getPosX(), c.getPosY()).getCouleur() == Couleur.Noir) {
+						listeCoup.remove(i);
+					} else if (Distance(c) > 2) {
+						listeCoup.remove(i);
+					}
 				}
-				/*if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getCouleur() == ListeCoup.get(i).getCouleur()){
-					
-				}//
 			}
-		}*/	
-		return ListeCoup;
+		} else {			
+			for (int i = listeCoup.size()-1; i >= 0; i--) {
+				Coup c = listeCoup.get(i);
+				if (c.getPosX() > 9 || c.getPosX() < 0 || c.getPosY() > 10 || c.getPosY() < 0) {
+					listeCoup.remove(i);
+				} else {
+					if (c.getPosX() <= 6 || c.getPosY() <= 2 || c.getPosY() >= 6) {
+						listeCoup.remove(i);
+					} else if (plateau.getCase(c.getPosX(), c.getPosY()).getCouleur() == Couleur.Rouge) {
+						listeCoup.remove(i);
+					} else if (Distance(c) > 2) {
+						listeCoup.remove(i);
+					}
+				}
+			}
+		}
+		return listeCoup;
 	}
 
 	public void AjoutCoups() {
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + Cardinal.NordEst.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + Cardinal.SudEst.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + Cardinal.NordOuest.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + Cardinal.SudOuest.getPosY()));
+		List<Coup> liste = this.getListCoup();
+		liste.clear();
+		liste.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + Cardinal.NordEst.getPosY()));
+		liste.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + Cardinal.SudEst.getPosY()));
+		liste.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + Cardinal.NordOuest.getPosY()));
+		liste.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + Cardinal.SudOuest.getPosY()));
 	}
 }

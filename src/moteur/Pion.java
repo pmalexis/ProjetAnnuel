@@ -11,20 +11,29 @@ public class Pion extends Pieces {
 	}
 
 	@Override
-	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
-		return null;
+	public List<Coup> getListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
+		for (int i = listeCoup.size() - 1; i >= 0; i--) {
+			if (plateau.getCase(listeCoup.get(i).getPosX(), listeCoup.get(i).getPosY()).getCouleur() == this.getCouleur()) {
+				listeCoup.remove(i);
+			}
+		}
+		return listeCoup;
 	}
 	
 	public void AjoutCoups() {
-		if (this.getCouleur() == Couleur.Noir) {
-			ListCoup.add(new Coup(this.getPositionX() + Cardinal.Nord.getPosX(), this.getPositionY() + Cardinal.Nord.getPosY()));
+		List<Coup> liste = this.getListCoup();
+		liste.clear();
+		
+		if (this.getCouleur() == Couleur.Rouge) {
+			liste.add(new Coup(this.getPositionX() + Cardinal.Nord.getPosX(), this.getPositionY() + Cardinal.Nord.getPosY()));
 		} else {
-			ListCoup.add(new Coup(this.getPositionX() + Cardinal.Sud.getPosX(), this.getPositionY() + Cardinal.Sud.getPosY()));
+			liste.add(new Coup(this.getPositionX() + Cardinal.Sud.getPosX(), this.getPositionY() + Cardinal.Sud.getPosY()));
 		}
 	}
 	
 	public void AjouterCoup() {
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.Est.getPosX(), this.getPositionY() + Cardinal.Est.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.Ouest.getPosX(), this.getPositionY() + Cardinal.Ouest.getPosY()));
+		List<Coup> liste = this.getListCoup();
+		liste.add(new Coup(this.getPositionX() + Cardinal.Est.getPosX(), this.getPositionY() + Cardinal.Est.getPosY()));
+		liste.add(new Coup(this.getPositionX() + Cardinal.Ouest.getPosX(), this.getPositionY() + Cardinal.Ouest.getPosY()));
 	}
 }

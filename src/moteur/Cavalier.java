@@ -10,18 +10,38 @@ public class Cavalier extends Pieces {
 		AjoutCoups();
 	}
 
-	public List<Coup> ListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
+	public List<Coup> getListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
 		
 		//Supprime tous les coups hors plateau
-		for(int i=0;i<listeCoup.size();i++) {
-			if(listeCoup.get(i).getPosX() < 0 || listeCoup.get(i).getPosY() < 0 || listeCoup.get(i).getPosX() > plateau.getHauteur() || listeCoup.get(i).getPosY() > plateau.getLargeur()) {
+		for(int i=listeCoup.size()-1;i>=0;i--) {
+			Coup c = listeCoup.get(i);
+			if (0 <= c.getPosX() && c.getPosX() < 10 && 0 <= c.getPosY() && c.getPosY() < 9) {
+				//Gestion de la capture
+				if (plateau.getCase(c.getPosX(), c.getPosY()).getCouleur() == this.getCouleur()) {
+					listeCoup.remove(i);
+				}
+			} else {
 				listeCoup.remove(i);
-				i--;
 			}
 		}
-		
-		
-		//Supprime tous les coups avec une pièce entre le cavalier et sa destination
+		//Supprime tous les coups avec une pièce entre le cavalier et sa destination		
+		return PieceAuMilieu(listeCoup, plateau);
+	}
+
+	public void AjoutCoups() {
+		List<Coup> liste = this.getListCoup();
+		liste.clear();
+		liste.add(new Coup(this.getPositionX() + (2 * Cardinal.NordEst.getPosX()), this.getPositionY() + Cardinal.NordEst.getPosY()));
+		liste.add(new Coup(this.getPositionX() + (2 * Cardinal.NordOuest.getPosX()), this.getPositionY() + Cardinal.NordOuest.getPosY()));
+		liste.add(new Coup(this.getPositionX() + (2 * Cardinal.SudEst.getPosX()), this.getPositionY() + Cardinal.SudEst.getPosY()));
+		liste.add(new Coup(this.getPositionX() + (2 * Cardinal.SudOuest.getPosX()), this.getPositionY() + Cardinal.SudOuest.getPosY()));
+		liste.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + (2 * Cardinal.NordEst.getPosY())));
+		liste.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + (2 * Cardinal.NordOuest.getPosY())));
+		liste.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + (2 * Cardinal.SudEst.getPosY())));
+		liste.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + (2 * Cardinal.SudOuest.getPosY())));
+	}
+	
+	private List<Coup> PieceAuMilieu (List<Coup> listeCoup, Plateau plateau) {
 		for(int i=0;i<listeCoup.size();i++) {
 			boolean bool = false;
 			
@@ -67,24 +87,6 @@ public class Cavalier extends Pieces {
 				i--;
 			}
 		}
-		
-		//affiche pour test
-		for(int i=0; i<listeCoup.size();i++) {
-			System.out.println("[" + listeCoup.get(i).posX + "," + listeCoup.get(i).posY + "]");
-		}
-		System.out.println("------------------");
-		
 		return listeCoup;
 	}
-
-	public void AjoutCoups() {
-		ListCoup.add(new Coup(this.getPositionX() + (2 * Cardinal.NordEst.getPosX()), this.getPositionY() + Cardinal.NordEst.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + (2 * Cardinal.NordOuest.getPosX()), this.getPositionY() + Cardinal.NordOuest.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + (2 * Cardinal.SudEst.getPosX()), this.getPositionY() + Cardinal.SudEst.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + (2 * Cardinal.SudOuest.getPosX()), this.getPositionY() + Cardinal.SudOuest.getPosY()));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordEst.getPosX(), this.getPositionY() + (2 * Cardinal.NordEst.getPosY())));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.NordOuest.getPosX(), this.getPositionY() + (2 * Cardinal.NordOuest.getPosY())));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudEst.getPosX(), this.getPositionY() + (2 * Cardinal.SudEst.getPosY())));
-		ListCoup.add(new Coup(this.getPositionX() + Cardinal.SudOuest.getPosX(), this.getPositionY() + (2 * Cardinal.SudOuest.getPosY())));
-	}	
 }

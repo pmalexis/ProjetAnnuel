@@ -10,36 +10,56 @@ public class Elephant extends Pieces {
 		AjoutCoups();
 	}
 	
-	public List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau) {
-		
-		/*for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getType() != Type.SansPiece){
-				for (int j = i+1; j < ListeCoup.size(); i++){
-					
+	public List<Coup> getListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
+		for (int i = listeCoup.size()-1; i >= 0; i--) {
+			Coup c = listeCoup.get(i);			
+			if (0 <= c.getPosX() && c.getPosX() < 10 && 0 <= c.getPosY() && c.getPosY() < 9) {
+				//Gestion de la capture
+				if (plateau.getCase(c.getPosX(), c.getPosY()).getCouleur() == this.getCouleur()) {
+					listeCoup.remove(i);
 				}
-				/*if(plateau.LireCase(ListeCoup.get(i).getPositionX(), ListeCoup.get(i).getPositionY()).getCouleur() == ListeCoup.get(i).getCouleur()){
-					
-				}//
+			} else {
+				listeCoup.remove(i);
 			}
-		}*/	
-		return ListeCoup;
+		}	
+		return PieceAuMilieu(listeCoup, plateau);
 	}
 
 	public void AjoutCoups() {
-		ListCoup.add(new Coup(this.getPositionX() + (Cardinal.NordEst.getPosX() * 2), this.getPositionY() + (Cardinal.NordEst.getPosY() * 2)));
-		ListCoup.add(new Coup(this.getPositionX() + (Cardinal.SudEst.getPosX() * 2), this.getPositionY() + (Cardinal.SudEst.getPosY() * 2)));
-		ListCoup.add(new Coup(this.getPositionX() + (Cardinal.NordOuest.getPosX() * 2), this.getPositionY() + (Cardinal.NordOuest.getPosY() * 2)));
-		ListCoup.add(new Coup(this.getPositionX() + (Cardinal.SudOuest.getPosX() * 2), this.getPositionY() + (Cardinal.SudOuest.getPosY() * 2)));
+		List<Coup> liste = this.getListCoup();
+		liste.clear();
+		liste.add(new Coup(this.getPositionX() + (Cardinal.NordEst.getPosX() * 2), this.getPositionY() + (Cardinal.NordEst.getPosY() * 2)));
+		liste.add(new Coup(this.getPositionX() + (Cardinal.SudEst.getPosX() * 2), this.getPositionY() + (Cardinal.SudEst.getPosY() * 2)));
+		liste.add(new Coup(this.getPositionX() + (Cardinal.NordOuest.getPosX() * 2), this.getPositionY() + (Cardinal.NordOuest.getPosY() * 2)));
+		liste.add(new Coup(this.getPositionX() + (Cardinal.SudOuest.getPosX() * 2), this.getPositionY() + (Cardinal.SudOuest.getPosY() * 2)));
+		
 	}
 	
-	private List<Coup> PieceAuMilieu(List<Coup> ListeCoup, Plateau plateau){
-		
-		/*for(int i = 0; i < ListeCoup.size(); i++){
-			if(plateau.LireCase(ListeCoup.get(i).getPositionX() + ListeCoup.get(i).getCardinal().Opposee().getPosX(), ListeCoup.get(i).getPositionY() + ListeCoup.get(i).getCardinal().Opposee().getPosY()).getType() != Type.SansPiece){
-				ListeCoup.remove(i);
+	private List<Coup> PieceAuMilieu (List<Coup> listeCoup, Plateau plateau) {
+		for(int i = listeCoup.size()-1; i >= 0; i--) {
+			boolean bool = false;
+			
+			if(listeCoup.get(i).getPosX() > this.getPositionX()) {
+				if(listeCoup.get(i).getPosY() > this.getPositionY()) {
+					if(plateau.getCase(this.getPositionX()+1, this.getPositionY()+1).getType() != Type.SansPiece) bool = true;
+				}
+				else {
+					if(plateau.getCase(this.getPositionX()+1, this.getPositionY()-1).getType() != Type.SansPiece) bool = true;
+				}
 			}
-		}*/
-		
-		return ListeCoup;
+			else {
+				if(listeCoup.get(i).getPosY() > this.getPositionY()) {
+					if(plateau.getCase(this.getPositionX()-1, this.getPositionY()+1).getType() != Type.SansPiece) bool = true;
+				}
+				else {
+					if(plateau.getCase(this.getPositionX()-1, this.getPositionY()-1).getType() != Type.SansPiece) bool = true;
+				}
+			}
+				
+			if(bool) {
+				listeCoup.remove(i);
+			}
+		}
+		return listeCoup;
 	}
 }

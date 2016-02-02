@@ -9,7 +9,7 @@ public abstract class Pieces {
 	private Type Type;
 	private Couleur Couleur;
 	private String name;
-	protected LinkedList<Coup> ListCoup = new LinkedList<Coup>();
+	private LinkedList<Coup> listCoup = new LinkedList<Coup>();
 	
 	public Pieces (int PositionX, int PositionY, Type Type, Couleur Couleur, String name) {
 		this.PositionX = PositionX;
@@ -41,12 +41,17 @@ public abstract class Pieces {
 	public String getName() {
 		return this.name;
 	}
+
+	public List<Coup> getListCoup() {
+		return this.listCoup;
+	}
 	
-	public abstract List<Coup> ListeCoupPossible(List<Coup> ListeCoup, Plateau plateau);
+	//public abstract void MaJCoup();
+	public abstract List<Coup> getListeCoupPossible(List<Coup> ListeCoup, Plateau plateau);
 	
 	public List<Coup> GestionLCP(List<Coup> ListeCoup, Plateau plateau){
-		ListeCoup = this.ListCoup;
-		ListeCoup = this.ListeCoupPossible(ListeCoup, plateau);
+		ListeCoup = this.listCoup;
+		ListeCoup = this.getListeCoupPossible(ListeCoup, plateau);
 		return ListeCoup;
 	}
 	
@@ -87,5 +92,9 @@ public abstract class Pieces {
 			}
 		}
 		return ListeCoup;
+	}
+	
+	protected int Distance (Coup c) {
+		return Math.abs(this.getPositionX()-c.getPosX() + this.getPositionY()-c.getPosY());
 	}
 }

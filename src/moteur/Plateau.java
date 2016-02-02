@@ -50,16 +50,16 @@ public class Plateau {
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };*/
 		
-		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
+		String[][] plateauTempo = { { "  ", "CN", "EN", "GN", "RN", "GN", "EN", "CN", "  " }, 
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "EN" },
+									{ "PN", "  ", "  ", "  ", "PN", "  ", "PN", "  ", "PN" },
+									{ "  ", "  ", "PN", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "PR", "  ", "PR", "  ", "PR", "  ", "PR", "  ", "PR" },
+									{ "ER", "  ", "  ", "  ", "  ", "  ", "  ", "ER", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "CN", "  ", "BN", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "ER", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " } };
+									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "  " } };
 			
 		for(int i = 0; i < plateauTempo.length; i++)
 			for(int j = 0; j < plateauTempo[0].length; j++) {
@@ -93,7 +93,7 @@ public class Plateau {
 	}	
 	
 	public List<Coup> getListCoupPossible(int i, int j) {
-		return this.plateau[i][j].ListeCoupPossible(this.plateau[i][j].getListCoup(), this);
+		return this.plateau[i][j].getListeCoupPossible(this.plateau[i][j].getListCoup(), this);
 	}
 	
 	/*

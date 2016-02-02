@@ -9,7 +9,7 @@ public class SansPiece extends Pieces {
 	}
 
 	@Override
-	public List<Coup> ListeCoupPossible(List<Coup> ListCoup, Plateau plateau) {
+	public List<Coup> getListeCoupPossible(List<Coup> ListCoup, Plateau plateau) {
 		return null;
 	}
 }
