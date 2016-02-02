@@ -1,6 +1,6 @@
 package moteur;
 
-enum Type {
+public enum Type {
 	
 	Pion ('P'),
 	Garde ('G'),

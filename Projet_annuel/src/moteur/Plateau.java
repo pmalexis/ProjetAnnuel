@@ -21,7 +21,7 @@ public class Plateau {
 	 * Retourne la case du plateau celon posX et posY
 	 */
 	public Pieces getCase(int posX, int posY){
-		return this.plateau[posY][posX];
+		return this.plateau[posX][posY];
 	}
 	
 	/*

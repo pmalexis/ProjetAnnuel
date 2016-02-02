@@ -2,6 +2,7 @@ package Controleur;
 
 import moteur.Pieces;
 import moteur.Plateau;
+import moteur.Type;
 
 public class Controleur {
 
@@ -20,5 +21,9 @@ public class Controleur {
 				tabTempo[i][j] = tabPion[i][j].getName();
 		
 		return tabTempo;
+	}
+
+	public Type getType(int[] tab) {
+		return this.plateau.getCase(tab[0], tab[1]).getType();
 	}
 }
