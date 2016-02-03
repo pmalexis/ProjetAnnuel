@@ -28,10 +28,6 @@ public class Roi extends Pieces {
 				}
 			}
 		} else {
-			for (int i = 0; i < listeCoup.size(); i++) {
-				System.out.println(listeCoup.get(i).getPosX() + " " + listeCoup.get(i).getPosY());
-			}
-			System.out.println("--------------------------------------------------------");
 			for (int i = listeCoup.size()-1; i >= 0; i--) {
 				Coup c = listeCoup.get(i);
 				if (c.getPosX() > 9 || c.getPosX() < 0 || c.getPosY() > 10 || c.getPosY() < 0) {
