@@ -94,8 +94,7 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 				//Dessine le plateau
 				if(i != tabChess.length-1 &&  j != tabChess[0].length-1) {
 					if(i==4) {
-						g.drawRect(posX, posY, posX*(tailleX-2), getHeight()/(tailleY+2));
-						break;
+						if(j==0) g.drawRect(posX, posY, posX*(tailleX-2), getHeight()/(tailleY+2));
 					}
 					else g.drawRect(posX, posY, getWidth()/(tailleX), getHeight()/(tailleY+2));
 				}
