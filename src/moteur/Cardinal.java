@@ -2,13 +2,13 @@ package moteur;
 
 enum Cardinal {
 
-    Nord(0, -1),       /** 0) Direction Nord.       */
-    NordEst(+1, -1),   /** 1) Direction Nord-Est.   */
-    Est(+1, 0),        /** 2) Direction Est.        */  
+    Nord(-1, 0),       /** 0) Direction Nord.       */
+    NordEst(-1, +1),   /** 1) Direction Nord-Est.   */
+    Est(0, +1),        /** 2) Direction Est.        */  
     SudEst(+1, +1),    /** 3) Direction Sud-Est.    */
-    Sud(0, +1),        /** 4) Direction Sud.        */
-    SudOuest(-1, +1),  /** 5) Direction Sud-Ouest.  */
-    Ouest(-1, 0),      /** 6) Direction Ouest.      */  
+    Sud(+1, 0),        /** 4) Direction Sud.        */
+    SudOuest(+1, -1),  /** 5) Direction Sud-Ouest.  */
+    Ouest(0, -1),      /** 6) Direction Ouest.      */  
     NordOuest(-1, -1); /** 7) Direction Nord-Ouest. */
 	
 	private int PosX;

@@ -41,9 +41,9 @@ public class Bombardier extends Pieces {
 			for (int i = 8 - this.getPositionX(); i >= a; i--) {
 				listeCoup.remove(i);
 			}
-			if (this.getPositionX() + a1 < plateau.getHauteur())
-				if (plateau.getCase(this.getPositionX()+a+a1, this.getPositionY()).getCouleur() != this.getCouleur())
-					listeCoup.add(new Coup(this.getPositionX()+a+a1,this.getPositionY()));
+			if (this.getPositionX() + a1 +1< plateau.getHauteur())
+				if (plateau.getCase(this.getPositionX()+a1+1, this.getPositionY()).getCouleur() != this.getCouleur())
+					listeCoup.add(new Coup(this.getPositionX()+a1+1,this.getPositionY()));
 		}
 		
 		int b = a;
@@ -61,7 +61,7 @@ public class Bombardier extends Pieces {
 			for (int i = this.getPositionX() + a - 1; i >= b; i--) {
 				listeCoup.remove(i);
 			}
-			if (a1 + b1 < plateau.getHauteur())
+			if (a1 + b1 < plateau.getHauteur() && (this.getPositionX()+a-1-b1) >= 0)
 				if (plateau.getCase(this.getPositionX()+a-1-b1, this.getPositionY()).getCouleur() != this.getCouleur())
 					listeCoup.add(new Coup(this.getPositionX()+a-1-b1,this.getPositionY()));
 		}
@@ -81,7 +81,7 @@ public class Bombardier extends Pieces {
 			for (int i = b + 7 - this.getPositionY(); i >= c; i--) {
 				listeCoup.remove(i);
 			}
-			if (this.getPositionY() + c1 -b < plateau.getLargeur())
+			if (this.getPositionY() + c1 +1 -b < plateau.getLargeur())
 				if (plateau.getCase(this.getPositionX(), this.getPositionY()-b+1+c1).getCouleur() != this.getCouleur())
 					listeCoup.add(new Coup(this.getPositionX(),this.getPositionY()-b+1+c1));
 		}
@@ -100,7 +100,7 @@ public class Bombardier extends Pieces {
 			for (int i = c + this.getPositionY() - 1; i >= d; i--) {
 				listeCoup.remove(i);
 			}
-			if (d1 < listeCoup.size())
+			if (d1 <= listeCoup.size() && this.getPositionY()-d1+c-1 >= 0)
 				if (plateau.getCase(this.getPositionX(), this.getPositionY()-d1+c-1).getCouleur() != this.getCouleur())
 					listeCoup.add(new Coup(this.getPositionX(),this.getPositionY()-d1+c-1));
 		}
