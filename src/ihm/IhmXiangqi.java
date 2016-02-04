@@ -9,22 +9,22 @@ import javax.swing.JFrame;
 import controleur.Controleur;
 
 @SuppressWarnings("serial")
-public class IhmChess extends JFrame {
+public class IhmXiangqi extends JFrame {
 
-	VisuChess  visuChess;
+	VisuXiangqi  visuChess;
 	Controleur controleur;
 	
 	/*
 	 * Controleur
 	 */
-	public IhmChess() {
+	public IhmXiangqi() {
 		
 		this.setTitle("Jeu du Xiangqi");
 		this.setLocation(100, 100);
 		this.setSize(600, 640);
 	
 		this.controleur = new Controleur();
-		this.visuChess  = new VisuChess(this.controleur);
+		this.visuChess  = new VisuXiangqi(this.controleur);
 		this.add(visuChess);
 		
 		//gerer la fermeture fenetre
@@ -39,6 +39,6 @@ public class IhmChess extends JFrame {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		IhmChess ihmChess = new IhmChess();
+		IhmXiangqi ihmXiangqi = new IhmXiangqi();
 	}
 }

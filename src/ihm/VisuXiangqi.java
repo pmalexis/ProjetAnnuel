@@ -22,7 +22,7 @@ import moteur.Coup;
  * Penser à mettre les images en fond transparent !!!
  */
 @SuppressWarnings("serial")
-public class VisuChess extends JPanel implements MouseListener, MouseMotionListener {
+public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionListener {
 
 	Controleur controleur;
 	
@@ -40,7 +40,7 @@ public class VisuChess extends JPanel implements MouseListener, MouseMotionListe
 	/*
 	 * Controleur
 	 */
-	public VisuChess(Controleur controleur) {
+	public VisuXiangqi(Controleur controleur) {
 		this.setBackground(Color.WHITE);
 		
 		this.controleur = controleur;
