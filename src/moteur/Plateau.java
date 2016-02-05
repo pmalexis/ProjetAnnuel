@@ -93,6 +93,7 @@ public class Plateau {
 	}	
 	
 	public List<Coup> getListCoupPossible(int i, int j) {
+		this.plateau[i][j].AjoutCoups();
 		return this.plateau[i][j].getListeCoupPossible(this.plateau[i][j].getListCoup(), this);
 	}
 	
@@ -111,5 +112,28 @@ public class Plateau {
 			str += "\n";
 		}
 		return str;
+	}
+
+	/*
+	 * Retourne un boolean celon si le coup à pu être jouer ou non
+	 */
+	public boolean jouer(int i, int j, int iF, int jF) {
+		boolean bool = false;
+		
+		List<Coup> listCoupPossible = this.getListCoupPossible(i, j);
+		
+		for(int n=0;n<listCoupPossible.size();n++)
+			if(listCoupPossible.get(n).getPosX() == iF && listCoupPossible.get(n).getPosY() == jF)
+				bool = true;
+
+		if(bool) {
+			this.plateau[iF][jF] = this.plateau[i][j];
+			this.plateau[i][j]   = new SansPiece  (i, j, Type.SansPiece,  Couleur.Aucune);
+			
+			this.plateau[iF][jF].setPositionX(iF);
+			this.plateau[iF][jF].setPositionY(jF);
+		}
+		
+		return bool;
 	}
 }

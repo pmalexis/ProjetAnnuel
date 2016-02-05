@@ -33,4 +33,8 @@ public class Controleur {
 	public List<Coup> getListCoupPossible(int i, int j) {
 		return this.plateau.getListCoupPossible(i,j);
 	}
+
+	public boolean jouer(int[] tabCoord, int[] tabCoordFinal) {
+		return this.plateau.jouer(tabCoord[0], tabCoord[1], tabCoordFinal[0], tabCoordFinal[1]);
+	}
 }

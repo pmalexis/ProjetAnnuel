@@ -100,7 +100,8 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 				}
 				
 				//Dessine les images
-				if(tabChess[i][j].length() > 0) image = getToolkit().getImage("res/img/"+tabChess[i][j]+".png");
+				if(tabChess[i][j].length() > 0)
+					image = getToolkit().getImage("res/img/" + tabChess[i][j]+".png");
 				else image = null;
 				
 				if(!(this.tabCoord[0] == i && this.tabCoord[1] == j))
@@ -188,16 +189,11 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 			
 			if(!this.firstClick) {
 				this.listCoupPossible  = this.controleur.getListCoupPossible(this.tabCoord[0], this.tabCoord[1]);
-				
-				for(int i=0;i<this.listCoupPossible.size();i++)
-					System.out.println("[" + this.listCoupPossible.get(i).getPosX() + "," + this.listCoupPossible.get(i).getPosY() + "]");
-				System.out.println("--------");
 			}
 		}	
 		else {
 			int[] tabCoordFinal = this.caseChoisi(me.getX(), me.getY());
-			//function controleur boolean bool = jouer(this.tabCoord, tabCoordFinal);
-			//selon bool tab à -1
+			this.controleur.jouer(this.tabCoord, tabCoordFinal);
 			this.tabCoord[0] = -1;
 			this.firstClick = true;
 			this.listCoupPossible = null;

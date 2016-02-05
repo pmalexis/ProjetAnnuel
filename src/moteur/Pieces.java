@@ -11,6 +11,7 @@ public abstract class Pieces {
 	private String name;
 	private LinkedList<Coup> listCoup = new LinkedList<Coup>();
 	
+	@SuppressWarnings("static-access")
 	public Pieces (int PositionX, int PositionY, Type Type, Couleur Couleur, String name) {
 		this.PositionX = PositionX;
 		this.PositionY = PositionY;
@@ -30,6 +31,7 @@ public abstract class Pieces {
 	public Type getType() {
 		return Type;
 	}
+	
 	public int getPositionX() {
 		return PositionX;
 	}
@@ -38,6 +40,14 @@ public abstract class Pieces {
 		return PositionY;
 	}
 
+	public void setPositionX(int x) {
+		PositionX = x;
+	}
+
+	public void setPositionY(int y) {
+		PositionY = y;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -46,8 +56,9 @@ public abstract class Pieces {
 		return this.listCoup;
 	}
 	
-	//public abstract void MaJCoup();
+	public abstract void AjoutCoups();
 	public abstract List<Coup> getListeCoupPossible(List<Coup> ListeCoup, Plateau plateau);
+	
 	
 	public List<Coup> GestionLCP(List<Coup> ListeCoup, Plateau plateau){
 		ListeCoup = this.listCoup;
@@ -61,6 +72,7 @@ public abstract class Pieces {
 		return ListePiece;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean PieceEnnemie(Pieces Autre){
 		System.out.println("Moi :" + this.getCouleur() + "Lui" + Autre.getCouleur() );
 		if(this.getCouleur() != Autre.Couleur && Autre.getCouleur() != Couleur.Aucune){
