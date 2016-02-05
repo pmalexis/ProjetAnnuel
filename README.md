@@ -2,6 +2,7 @@ XIANGQI (ou jeu d'échec chinois)
 
 Particularité => drag&drop, inteligence artificielle, aide pour le joueur ne connaissant pas les régles de ce jeu.
 
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 Les packages :
 
