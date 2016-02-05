@@ -12,4 +12,6 @@ controleur => Permet de faire circuler des informations de l'ihm vers le control
 
 ihm => L'interface Homme-machine permet aux joueurs ou aux spectateur de communiquer avec le moteur de manière intuitive.
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 Auteurs => LECLEIR Alex & PREVOST-MAYNEN Alexis
