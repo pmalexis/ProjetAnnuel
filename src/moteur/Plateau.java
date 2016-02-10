@@ -9,6 +9,8 @@ public class Plateau {
 	
 	Pieces plateau[][];
 	
+	Couleur joueurActuel;
+	
 	/*
 	 * Constructeur
 	 */
@@ -16,6 +18,8 @@ public class Plateau {
 		
 		this.plateau = new Pieces[this.HAUTEUR][this.LARGEUR];
  
+		this.joueurActuel = Couleur.Rouge;
+		
 		this.initialisationPlateau();
 	}
 	
@@ -51,7 +55,7 @@ public class Plateau {
 									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };*/
 		
 		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
-									{ "  ", "  ", "  ", "  ", "RN", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "RN", "PR", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "PN", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -92,28 +96,24 @@ public class Plateau {
 		return this.LARGEUR;
 	}	
 	
+	public Couleur getJoueurAct() {
+		return this.joueurActuel;
+	}
+	
+	public void joueurSuivant() {
+		if(this.joueurActuel == Couleur.Rouge) this.joueurActuel = Couleur.Noir;
+		else this.joueurActuel = Couleur.Rouge;
+	}
+	
+	/*
+	 * Retourne la liste de coup possible de la pièce en position i,j
+	 */
 	public List<Coup> getListCoupPossible(int i, int j) {
 		this.plateau[i][j].AjoutCoups();
 		return this.plateau[i][j].getListeCoupPossible(this.plateau[i][j].getListCoup(), this);
 	}
 	
-	/*
-	 * Retourne un string qui est le plateau actuel du xiangqi
-	 */
-	public String toString(){
-		
-		String str = "";
-		
-		for(int i = 0; i < this.HAUTEUR; i++){
-			str += "|";
-			for(int j = 0; j < this.LARGEUR; j++){
-				str += " " + this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
-			}
-			str += "\n";
-		}
-		return str;
-	}
-
+	
 	/*
 	 * Retourne un boolean celon si le coup à pu être jouer ou non
 	 */
@@ -134,6 +134,26 @@ public class Plateau {
 			this.plateau[iF][jF].setPositionY(jF);
 		}
 		
+		if(bool) this.joueurSuivant();
+		
 		return bool;
+	}
+	
+	
+	/*
+	 * Retourne un string qui est le plateau actuel du xiangqi
+	 */
+	public String toString(){
+		
+		String str = "";
+		
+		for(int i = 0; i < this.HAUTEUR; i++){
+			str += "|";
+			for(int j = 0; j < this.LARGEUR; j++){
+				str += " " + this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
+			}
+			str += "\n";
+		}
+		return str;
 	}
 }

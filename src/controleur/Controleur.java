@@ -2,6 +2,7 @@ package controleur;
 
 import java.util.List;
 
+import moteur.Couleur;
 import moteur.Coup;
 import moteur.Pieces;
 import moteur.Plateau;
@@ -28,6 +29,14 @@ public class Controleur {
 
 	public Type getType(int[] tab) {
 		return this.plateau.getCase(tab[0], tab[1]).getType();
+	}
+	
+	public Couleur getCouleur(int[] tab) {
+		return this.plateau.getCase(tab[0], tab[1]).getCouleur();
+	}
+	
+	public Couleur getJoueurAct() {
+		return this.plateau.getJoueurAct();
 	}
 
 	public List<Coup> getListCoupPossible(int i, int j) {

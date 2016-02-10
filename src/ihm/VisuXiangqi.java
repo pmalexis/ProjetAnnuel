@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import java.util.List;
 
 import controleur.Controleur;
+import moteur.Couleur;
 import moteur.Type;
 import moteur.Coup;
 
@@ -25,6 +26,7 @@ import moteur.Coup;
 public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionListener {
 
 	Controleur controleur;
+	IhmXiangqi ihm;
 	
 	int tailleX;
 	int tailleY;
@@ -40,10 +42,11 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 	/*
 	 * Controleur
 	 */
-	public VisuXiangqi(Controleur controleur) {
+	public VisuXiangqi(Controleur controleur, IhmXiangqi ihm) {
 		this.setBackground(Color.WHITE);
 		
 		this.controleur = controleur;
+		this.ihm        = ihm;
 	
 		String[][] tabChess = this.controleur.getTabChess();
 		this.tailleX = tabChess.length;
@@ -132,7 +135,7 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 		if(tabCoordImage[0] > -1)
 			g.drawImage(imageTempo, this.tabMouse[0]-((getWidth()/(tabCoordImage[0]))/2), this.tabMouse[1]-((getHeight()/(tabCoordImage[1]+2))/2), getWidth()/(tabCoordImage[0]), getHeight()/(tabCoordImage[1]+2), null);
 	}
-
+	
 	
 	/*
 	 * Permet de choisir une case du tableau celon l'endroit ou le clique de la souris a ete effectue
@@ -179,28 +182,33 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 	public void mouseClicked(MouseEvent me) {
 		if(this.firstClick) {
 			this.tabCoord = this.caseChoisi(me.getX(), me.getY());
-			if(this.tabCoord[0] < 0) this.firstClick = true;
-			else this.firstClick = false;
 			
-			if(this.controleur.getType(this.tabCoord) == Type.SansPiece) {
-				this.firstClick = true;
-				//this.tabCoord[0] = -1;
+			if(this.controleur.getJoueurAct() == this.controleur.getCouleur(tabCoord)) {
+				if(this.tabCoord[0] < 0) this.firstClick = true;
+				else this.firstClick = false;
+				
+				if(this.controleur.getType(this.tabCoord) == Type.SansPiece) {
+					this.firstClick = true;
+				}
+				
+				if(!this.firstClick) {
+					this.listCoupPossible  = this.controleur.getListCoupPossible(this.tabCoord[0], this.tabCoord[1]);
+				}
 			}
-			
-			if(!this.firstClick) {
-				this.listCoupPossible  = this.controleur.getListCoupPossible(this.tabCoord[0], this.tabCoord[1]);
-			}
+			else this.tabCoord[0] = -1;
 		}	
 		else {
 			int[] tabCoordFinal = this.caseChoisi(me.getX(), me.getY());
-			this.controleur.jouer(this.tabCoord, tabCoordFinal);
-			this.tabCoord[0] = -1;
-			this.firstClick = true;
+			
+			if(this.controleur.jouer(this.tabCoord, tabCoordFinal)) {
+				String strTempo = Couleur.Rouge==this.controleur.getJoueurAct()?"Rouge":"Noir";
+				this.ihm.changerLabel("C'est maintenant au tour du joueur '" + strTempo + "'");
+			}
+			
+			this.tabCoord[0]      = -1;
+			this.firstClick       = true;
 			this.listCoupPossible = null;
 		}
-		
-		if(this.tabCoord[0] > -1)
-			System.out.println("Vous avez clique sur : " + this.controleur.getTabChess()[this.tabCoord[0]][this.tabCoord[1]]);
 		
 		repaint();
 	}
