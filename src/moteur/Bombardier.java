@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Bombardier extends Pieces {
 	
-	protected static boolean test = true;
+	public static boolean test = true;
 	
 	public Bombardier (int PositionX, int PositionY, Type Type, Couleur Couleur) {
 		super(PositionX, PositionY, Type, Couleur, "B");
@@ -93,9 +93,8 @@ public class Bombardier extends Pieces {
 			}
 		}
 		
-		if (test) {
+		if (Bombardier.test) {
 			listeCoup = plateau.estEchec(this, listeCoup);
-			test = false;
 		}
 		
 		return listeCoup;

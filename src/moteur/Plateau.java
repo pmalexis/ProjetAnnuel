@@ -176,7 +176,7 @@ public class Plateau {
 			LinkedList<Pieces> bombardier = new LinkedList<Pieces>();
 			for (int i = 0; i < this.HAUTEUR; i++) {
 				for (int j = 0; j < this.LARGEUR; j++) {
-					if (this.getCase(i, j).getType() == Type.Bombardier) {
+					if (this.getCase(i, j).getType() == Type.Bombardier && (i != p.getPositionX() && j != p.getPositionY()) ) {
 						bombardier.add(this.getCase(i, j));
 					}
 				}
@@ -192,8 +192,10 @@ public class Plateau {
 					}
 				}
 			}
+			
 			boolean echecN = false;
 			boolean echecR = false;
+			Bombardier.test = false;
 			for (int i = 0; i < bombardier.size(); i++) {
 				List<Coup> liste = this.getListCoupPossible(bombardier.get(i).getPositionX(), bombardier.get(i).getPositionY());
 				for (int j = 0; j < liste.size(); j++) {
@@ -205,6 +207,7 @@ public class Plateau {
 					}
 				}
 			}
+			Bombardier.test = true;
 			
 			int c = 0;
 			int l = 0;
@@ -218,6 +221,7 @@ public class Plateau {
 					l = 0;
 				}
 			}
+			
 			if (c >= 3) {
 				cpt = 1;
 			}
