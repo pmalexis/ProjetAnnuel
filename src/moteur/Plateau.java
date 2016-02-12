@@ -197,10 +197,10 @@ public class Plateau {
 			for (int i = 0; i < bombardier.size(); i++) {
 				List<Coup> liste = this.getListCoupPossible(bombardier.get(i).getPositionX(), bombardier.get(i).getPositionY());
 				for (int j = 0; j < liste.size(); j++) {
-					if (roi[0].equals(liste.get(j))) {
+					if (roi[0] != null && roi[0].equals(liste.get(j))) {
 						echecR = true;
 					}
-					if (roi[1].equals(liste.get(j))) {
+					if (roi[1] != null && roi[1].equals(liste.get(j))) {
 						echecN = true;
 					}
 				}
@@ -208,6 +208,7 @@ public class Plateau {
 			
 			int c = 0;
 			int l = 0;
+			int cpt = 0;
 			boolean res = false;
 			
 			while (this.getCase(c, l).getType() != Type.Roi) {
@@ -217,8 +218,9 @@ public class Plateau {
 					l = 0;
 				}
 			}
-			
-			int cpt = 0;
+			if (c >= 3) {
+				cpt = 1;
+			}
 			for (int i = c+1; i < this.HAUTEUR; i++) {
 				if (this.getCase(i, l).getType() == Type.Roi) break;
 				if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
