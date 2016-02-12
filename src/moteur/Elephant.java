@@ -12,7 +12,7 @@ public class Elephant extends Pieces {
 	
 	public List<Coup> getListeCoupPossible(List<Coup> listeCoup, Plateau plateau) {
 		for (int i = listeCoup.size()-1; i >= 0; i--) {
-			Coup c = listeCoup.get(i);			
+			Coup c = listeCoup.get(i);
 			if (0 <= c.getPosX() && c.getPosX() < 10 && 0 <= c.getPosY() && c.getPosY() < 9) {
 				//Gestion de la capture
 				if (plateau.getCase(c.getPosX(), c.getPosY()).getCouleur() == this.getCouleur()) {
@@ -21,7 +21,23 @@ public class Elephant extends Pieces {
 			} else {
 				listeCoup.remove(i);
 			}
-		}	
+		}
+		if (this.getCouleur() == Couleur.Noir) {
+			for (int i = listeCoup.size()-1; i >= 0; i--) {
+				Coup c = listeCoup.get(i);			
+				if (c.getPosX() > 4) {
+					listeCoup.remove(i);
+				}
+			}
+		} else {
+			for (int i = listeCoup.size()-1; i >= 0; i--) {
+				Coup c = listeCoup.get(i);			
+				if (c.getPosX() < 5) {
+					listeCoup.remove(i);
+				}
+			}
+		}
+		listeCoup = plateau.estEchec(this, listeCoup);
 		return PieceAuMilieu(listeCoup, plateau);
 	}
 

@@ -43,7 +43,7 @@ public class Roi extends Pieces {
 				}
 			}
 		}
-		return listeCoup;
+		return plateau.estEchec(this, listeCoup);
 	}
 
 	public void AjoutCoups() {

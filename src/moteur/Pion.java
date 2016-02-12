@@ -18,6 +18,8 @@ public class Pion extends Pieces {
 					listeCoup.remove(i);
 				}
 		}
+		
+		listeCoup = plateau.estEchec(this, listeCoup);
 		return listeCoup;
 	}
 	

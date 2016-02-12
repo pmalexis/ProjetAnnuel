@@ -24,6 +24,7 @@ public class Cavalier extends Pieces {
 				listeCoup.remove(i);
 			}
 		}
+		listeCoup = plateau.estEchec(this, listeCoup);
 		//Supprime tous les coups avec une pièce entre le cavalier et sa destination		
 		return PieceAuMilieu(listeCoup, plateau);
 	}

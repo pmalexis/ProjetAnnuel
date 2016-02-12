@@ -1,5 +1,6 @@
 package moteur;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Plateau {
@@ -56,13 +57,13 @@ public class Plateau {
 		
 		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
 									{ "  ", "  ", "  ", "  ", "RN", "PR", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "PN", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "BN", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "BR", "EN", "  ", "BN", "  ", "  ", "  ", "  " },
+									{ "  ", "BR", "EN", "  ", "PR", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "BR", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "BR", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " } };
 			
 		for(int i = 0; i < plateauTempo.length; i++)
@@ -113,7 +114,6 @@ public class Plateau {
 		return this.plateau[i][j].getListeCoupPossible(this.plateau[i][j].getListCoup(), this);
 	}
 	
-	
 	/*
 	 * Retourne un boolean celon si le coup à pu être jouer ou non
 	 */
@@ -139,29 +139,11 @@ public class Plateau {
 		return bool;
 	}
 	
-	
-	/*
-	 * Retourne un string qui est le plateau actuel du xiangqi
-	 */
-	public String toString(){
-		
-		String str = "";
-		
-		for(int i = 0; i < this.HAUTEUR; i++){
-			str += "|";
-			for(int j = 0; j < this.LARGEUR; j++){
-				str += " " + this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
-			}
-			str += "\n";
-		}
-		return str;
-	}
-	
-	public Couleur estEchec () {
+	public boolean estEchec () {
 		
 		int c = 0;
 		int l = 0;
-		boolean res;
+		boolean res = false;
 		
 		while (this.getCase(c, l).getType() != Type.Roi) {
 			l++;
@@ -179,21 +161,102 @@ public class Plateau {
 		
 		if (cpt == 0) res = true;
 		
-		Coup[] bombardier = new Coup[4];
-		int k = 0;
-		for (int i = 0; i < this.HAUTEUR; i++) {
-			for (int j = 0; j < this.LARGEUR; j++) {
-				if (this.getCase(i, j).getType() == Type.Bombardier) {
-					bombardier[k] = new Coup(i, j);
-					k++;
-				}
-			}
-		}
-		
-		return Couleur.Noir;
+		return res;
 	}
 	
-	public boolean estEchec (Couleur c) {
-		return true;
+	public List<Coup> estEchec (Pieces p, List<Coup> listeCoup) {
+		
+		for (int k = listeCoup.size()-1; k >= 0; k--) {
+			
+			Pieces save = this.plateau[listeCoup.get(k).getPosX()][listeCoup.get(k).getPosY()];
+
+			this.plateau[listeCoup.get(k).getPosX()][listeCoup.get(k).getPosY()] = p;
+			this.plateau[p.getPositionX()][p.getPositionY()] = new SansPiece(p.getPositionX(), p.getPositionY(), Type.SansPiece, Couleur.Aucune);
+			
+			LinkedList<Pieces> bombardier = new LinkedList<Pieces>();
+			for (int i = 0; i < this.HAUTEUR; i++) {
+				for (int j = 0; j < this.LARGEUR; j++) {
+					if (this.getCase(i, j).getType() == Type.Bombardier) {
+						bombardier.add(this.getCase(i, j));
+					}
+				}
+			}
+			Coup[] roi = new Coup[2];
+			for (int i = 0; i < this.HAUTEUR; i++) {
+				for (int j = 0; j < this.LARGEUR; j++) {
+					if (this.getCase(i, j).getName().equals("RR")) {
+						roi[0] = new Coup(i,j);
+					}
+					if (this.getCase(i, j).getName().equals("RN")) {
+						roi[1] = new Coup(i,j);
+					}
+				}
+			}
+			boolean echecN = false;
+			boolean echecR = false;
+			for (int i = 0; i < bombardier.size(); i++) {
+				List<Coup> liste = this.getListCoupPossible(bombardier.get(i).getPositionX(), bombardier.get(i).getPositionY());
+				for (int j = 0; j < liste.size(); j++) {
+					if (roi[0].equals(liste.get(j))) {
+						echecR = true;
+					}
+					if (roi[1].equals(liste.get(j))) {
+						echecN = true;
+					}
+				}
+			}
+			
+			int c = 0;
+			int l = 0;
+			boolean res = false;
+			
+			while (this.getCase(c, l).getType() != Type.Roi) {
+				l++;
+				if (l >= this.LARGEUR) {
+					c++;
+					l = 0;
+				}
+			}
+			
+			int cpt = 0;
+			for (int i = c+1; i < this.HAUTEUR; i++) {
+				if (this.getCase(i, l).getType() == Type.Roi) break;
+				if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
+			}
+			
+			if (cpt == 0) res = true;
+			
+			this.plateau[listeCoup.get(k).getPosX()][listeCoup.get(k).getPosY()] = save;
+			
+			if (p.getCouleur() == Couleur.Noir && echecN) {
+				listeCoup.remove(k);
+			}
+			if (p.getCouleur() == Couleur.Rouge && echecR) {
+				listeCoup.remove(k);
+			}
+			if (res) {
+				listeCoup.remove(k);
+			}
+		}
+		this.plateau[p.getPositionX()][p.getPositionY()] = p;
+		
+		return listeCoup;
+	}
+	
+	/*
+	 * Retourne un string qui est le plateau actuel du xiangqi
+	 */
+	public String toString(){
+		
+		String str = "";
+		
+		for(int i = 0; i < this.HAUTEUR; i++){
+			str += "|";
+			for(int j = 0; j < this.LARGEUR; j++){
+				str += " " + this.plateau[i][j].getType().getRepresentation() + "" + this.plateau[i][j].getCouleur().getCouleur() + " |";
+			}
+			str += "\n";
+		}
+		return str;
 	}
 }

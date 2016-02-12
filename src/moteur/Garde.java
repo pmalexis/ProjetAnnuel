@@ -42,7 +42,7 @@ public class Garde extends Pieces {
 				}
 			}
 		}
-		return listeCoup;
+		return plateau.estEchec(this, listeCoup);
 	}
 
 	public void AjoutCoups() {
