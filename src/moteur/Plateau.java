@@ -176,7 +176,7 @@ public class Plateau {
 			LinkedList<Pieces> bombardier = new LinkedList<Pieces>();
 			for (int i = 0; i < this.HAUTEUR; i++) {
 				for (int j = 0; j < this.LARGEUR; j++) {
-					if (this.getCase(i, j).getType() == Type.Bombardier && (i != p.getPositionX() && j != p.getPositionY()) ) {
+					if (this.getCase(i, j).getType() == Type.Bombardier && (i != listeCoup.get(k).getPosX() || j != listeCoup.get(k).getPosY()) ) {
 						bombardier.add(this.getCase(i, j));
 					}
 				}
@@ -211,7 +211,7 @@ public class Plateau {
 			
 			int c = 0;
 			int l = 0;
-			int cpt = 0;
+			int cpt = 2;
 			boolean res = false;
 			
 			while (this.getCase(c, l).getType() != Type.Roi) {
@@ -222,15 +222,15 @@ public class Plateau {
 				}
 			}
 			
-			if (c >= 3) {
-				cpt = 1;
+			if (c < 2) {
+				cpt = 0;
 			}
 			for (int i = c+1; i < this.HAUTEUR; i++) {
-				if (this.getCase(i, l).getType() == Type.Roi) break;
 				if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
+				if (this.getCase(i, l).getType() == Type.Roi) break;
 			}
 			
-			if (cpt == 0) res = true;
+			if (cpt-1 == 0) res = true;
 			
 			this.plateau[listeCoup.get(k).getPosX()][listeCoup.get(k).getPosY()] = save;
 			
