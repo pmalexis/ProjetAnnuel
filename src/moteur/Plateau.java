@@ -156,4 +156,44 @@ public class Plateau {
 		}
 		return str;
 	}
+	
+	public Couleur estEchec () {
+		
+		int c = 0;
+		int l = 0;
+		boolean res;
+		
+		while (this.getCase(c, l).getType() != Type.Roi) {
+			l++;
+			if (l >= this.LARGEUR) {
+				c++;
+				l = 0;
+			}
+		}
+		
+		int cpt = 0;
+		for (int i = c+1; i < this.HAUTEUR; i++) {
+			if (this.getCase(i, l).getType() == Type.Roi) break;
+			if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
+		}
+		
+		if (cpt == 0) res = true;
+		
+		Coup[] bombardier = new Coup[4];
+		int k = 0;
+		for (int i = 0; i < this.HAUTEUR; i++) {
+			for (int j = 0; j < this.LARGEUR; j++) {
+				if (this.getCase(i, j).getType() == Type.Bombardier) {
+					bombardier[k] = new Coup(i, j);
+					k++;
+				}
+			}
+		}
+		
+		return Couleur.Noir;
+	}
+	
+	public boolean estEchec (Couleur c) {
+		return true;
+	}
 }
