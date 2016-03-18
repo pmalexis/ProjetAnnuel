@@ -8,14 +8,19 @@ public class Plateau {
 	private final int LARGEUR = 9;
 	private final int HAUTEUR  = 10;
 	
-	Pieces plateau[][];
+	public Pieces plateau[][];
 	
-	Couleur joueurActuel;
+	public Couleur joueurActuel;
+	
+	public boolean joueurUn_IA, joueurDeux_IA;
 	
 	/*
 	 * Constructeur
 	 */
-	public Plateau(){
+	public Plateau(boolean jUnIa, boolean jDeuxIa){
+		
+		this.joueurUn_IA   = jUnIa;
+		this.joueurDeux_IA = jDeuxIa;
 		
 		this.plateau = new Pieces[this.HAUTEUR][this.LARGEUR];
  
@@ -56,11 +61,11 @@ public class Plateau {
 									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };*/
 		
 		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
-									{ "  ", "  ", "  ", "  ", "RN", "PR", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "RN", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "BN", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "BR", "EN", "  ", "PR", "  ", "  ", "  ", "  " },
+									{ "  ", "BR", "  ", "  ", "PR", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "BR", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  ", "  " },
@@ -101,6 +106,14 @@ public class Plateau {
 		return this.joueurActuel;
 	}
 	
+	public boolean getJoueurUn_IA() {
+		return this.joueurUn_IA;
+	}
+	
+	public boolean getJoueurDeux_IA() {
+		return this.joueurDeux_IA;
+	}
+	
 	public void joueurSuivant() {
 		if(this.joueurActuel == Couleur.Rouge) this.joueurActuel = Couleur.Noir;
 		else this.joueurActuel = Couleur.Rouge;
@@ -137,6 +150,11 @@ public class Plateau {
 		if(bool) this.joueurSuivant();
 		
 		return bool;
+	}
+	
+	public int[] jouerIA() {
+		IaXiangqi ia = new IaXiangqi(this.getJoueurAct());
+		return ia.jouer(this);
 	}
 	
 	public boolean estEchec () {

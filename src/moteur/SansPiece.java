@@ -12,4 +12,7 @@ public class SansPiece extends Pieces {
 	public List<Coup> getListeCoupPossible(List<Coup> ListCoup, Plateau plateau) {
 		return null;
 	}
+
+	@Override
+	public void AjoutCoups() {}
 }

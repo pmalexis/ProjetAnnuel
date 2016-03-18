@@ -6,7 +6,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		Plateau p = new Plateau();
+		Plateau p = new Plateau(true, true);
 		
 		System.out.println(p);
 		

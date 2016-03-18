@@ -13,7 +13,7 @@ public class Controleur {
 	Plateau plateau;
 	
 	public Controleur() {
-		plateau = new Plateau();
+		plateau = new Plateau(false, true); //J1 joueur, J2 ia
 	}
 	
 	public String[][] getTabChess() {
@@ -38,6 +38,14 @@ public class Controleur {
 	public Couleur getJoueurAct() {
 		return this.plateau.getJoueurAct();
 	}
+	
+	public boolean getJoueurUn_IA() {
+		return this.plateau.getJoueurUn_IA();
+	}
+	
+	public boolean getJoueurDeux_IA() {
+		return this.plateau.getJoueurDeux_IA();
+	}
 
 	public List<Coup> getListCoupPossible(int i, int j) {
 		return this.plateau.getListCoupPossible(i,j);
@@ -45,5 +53,11 @@ public class Controleur {
 
 	public boolean jouer(int[] tabCoord, int[] tabCoordFinal) {
 		return this.plateau.jouer(tabCoord[0], tabCoord[1], tabCoordFinal[0], tabCoordFinal[1]);
+	}
+	
+	public boolean jouerIa() {
+		int[] tabJouer = this.plateau.jouerIA();
+		return false;
+		//return this.plateau.jouer(tabJouer[0], tabJouer[1], tabJouer[2], tabJouer[3]);
 	}
 }

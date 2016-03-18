@@ -210,6 +210,12 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 			this.listCoupPossible = null;
 		}
 		
+		//Si le joueur est un ia, il joue
+		if( (this.controleur.getJoueurAct() == Couleur.Rouge && this.controleur.getJoueurUn_IA() == true) ||
+			(this.controleur.getJoueurAct() == Couleur.Noir && this.controleur.getJoueurDeux_IA() == true) ) {
+			this.controleur.jouerIa();
+		}
+		
 		repaint();
 	}
 	
