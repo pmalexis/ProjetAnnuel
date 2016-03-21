@@ -1,130 +1,105 @@
 package moteur;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IaXiangqi {
 
 	Couleur couleur;
 	Plateau plateau;
+	Coup nextCoup;
 	
 	public IaXiangqi(Couleur c) {
 		this.couleur = c;
 	}
 	
-	public int[] jouer(Plateau p) {
+	public Plateau jouer(Plateau p) {
 		this.plateau = p;
+		ArrayList<Plateau> possible = p.next();
+		long[] index = IaXiangqi.alphaBeta(this.plateau, 2, 0, 0);
 		
-		this.min(2);
-		
-		return null;
+		return possible.get((int)index[1]);
 	}
 	
-	//coup de l'ia actuel
-	private int min(int p) {
-		
-		if(!this.plateau.estEchec() || p > 0) {		
-			
-			//On créer une save du tableau de pieces
-			Pieces[][] tabPsave = new Pieces[this.plateau.getPlateau().length][this.plateau.getPlateau()[0].length];
-			for(int i=0;i<tabPsave.length;i++)
-				for(int j=0;j<tabPsave[0].length;j++)
-					tabPsave[i][j] = this.plateau.getPlateau()[i][j];
-			
-			//On parcours tout le tableau pour trouver les pieces
-			for(int i=0;i<this.plateau.getPlateau().length;i++)
-				for(int j=0;j<this.plateau.getPlateau()[0].length;j++)
-					if(this.plateau.getPlateau()[i][j].getCouleur() == this.couleur) {
-						List<Coup> lc = this.plateau.getListCoupPossible(i, j);
-						Pieces pSave;
-						if(lc != null) { //System.out.println(lc);
-							for(int k=0;k<lc.size();k++) {
-								
-								System.out.println("MAX [" + i + "][" + j + "] " + k + " " + this.plateau.getPlateau()[i][j].getType());
-								System.out.println(lc); //liste ce met à jour toute seule ?! Oo
-								
-								//changement pos
-								int iF = lc.get(k).getPosX();
-								int jF = lc.get(k).getPosY();
-								pSave = this.plateau.getPlateau()[iF][jF];
-								this.plateau.jouer(i, j, iF, jF);
-								
-								this.max(p-1); 
-								//this.afficher(this.plateau.getPlateau());
-								
-								//reset pos
-								this.deJouer(i, j, iF, jF, pSave);
-							}
-							this.plateau.plateau = tabPsave;
+	public static long[] alphaBeta(Plateau p, int prof, long a, long b) {
+		if(prof <= 0) {
+			long[] valeurs = {heuristique(p), 0};
+			return valeurs;
+		}
+		else {
+			long meilleur = -5000; //à définir
+			ArrayList<Plateau> possible = p.next();
+			int i;
+			for(i=0;i<possible.size();i++) {
+				long[] val = IaXiangqi.alphaBeta(possible.get(i), prof-1, -a, -b);
+				if(-val[0] > meilleur) {
+					meilleur = -val[0];
+					if(meilleur > a) {
+						a = meilleur;
+						if(a >= b) {
+							long[] valeurs = {meilleur, i};
+							return valeurs;
 						}
 					}
-			this.plateau.plateau = tabPsave;
+				}
+			}
+			long[] valeurs = {meilleur, i};
+			return valeurs;
 		}
-		else this.heuristique(p);			
-		
-		return 0;
-	}
-
-	//coup de l'ia adverse
-	private int max(int p) {
-
-		if(!this.plateau.estEchec() && p > 0) {		
-			
-			//On créer une save du tableau de pieces
-			Pieces[][] tabPsave = new Pieces[this.plateau.getPlateau().length][this.plateau.getPlateau()[0].length];
-			for(int i=0;i<tabPsave.length;i++)
-				for(int j=0;j<tabPsave[0].length;j++)
-					tabPsave[i][j] = this.plateau.getPlateau()[i][j];
-			
-			//On parcours tout le tableau pour trouver les pieces
-			for(int i=0;i<this.plateau.getPlateau().length;i++)
-				for(int j=0;j<this.plateau.getPlateau()[0].length;j++)
-					if(this.plateau.getPlateau()[i][j].getCouleur() != this.couleur) {
-						List<Coup> lc = this.plateau.getListCoupPossible(i, j);
-						Pieces pSave;
-						
-						if(lc != null) { //System.out.println(lc);
-							for(int k=0;k<lc.size();k++) {
-								
-								System.out.println(" -> MIN [" + i + "][" + j + "] " + k + " " + this.plateau.getPlateau()[i][j].getType());
-
-								//changement pos
-								pSave = this.plateau.getPlateau()[lc.get(k).getPosX()][lc.get(k).getPosY()];
-								this.plateau.jouer(i, j, lc.get(k).getPosX(), lc.get(k).getPosY());
-								
-								//this.min(tabP, p-1);
-								//this.afficher(this.plateau.getPlateau());
-								
-								//reset pos
-								this.deJouer(i, j, lc.get(k).getPosX(), lc.get(k).getPosY(), pSave);
-							}
-							this.plateau.plateau = tabPsave;
-						}
-					}
-			this.plateau.plateau = tabPsave;
-		}
-		else this.heuristique(p);			
-		
-		return 0;
 	}
 	
-	private int heuristique(int p) {
-		System.out.println(p);
-		return 0;
+	/*public static Plateau MinMax (int profondeur, Plateau init, long max, long min) {
+		long tmp;
+		Plateau coup = new Plateau(true, true);
+		max = -200;
+		ArrayList<Plateau> possible = init.next();
+		for (int i = 0; i < possible.size(); i++) {
+			//System.out.println(possible.get(i));
+			tmp = Min(profondeur-1, possible.get(i), max, min);
+			if (tmp > max) {
+				max = tmp;
+				coup = Plateau.copyPlateau(possible.get(i));
+			}
+		}					
+		return coup;
 	}
 	
-	private void deJouer(int i, int j, int iF, int jF, Pieces pSave) {
-		if(i==2 && j==4) {
-			System.out.println(i + " : " + j + " : " + this.plateau.getPlateau()[iF][jF].getType());
+	public static long Min (int profondeur, Plateau plat, long max, long min) {
+		if (profondeur == 0) {
+			//System.out.println(dij.Evaluation(gb.joueur1, gb.joueur2));
+			return heuristique(plat);
+		} else {
+			min = 200;
+			ArrayList<Plateau> possible = plat.next();
+			for (int i = 0; i < possible.size(); i++) {
+				System.out.println(possible.get(i));
+				min = Math.min(min, Max(profondeur-1, possible.get(i), max, min));
+			}
 		}
-		
-		this.plateau.getPlateau()[iF][jF].setPositionX(i);
-		this.plateau.getPlateau()[iF][jF].setPositionY(j);
-		
-		this.plateau.getPlateau()[i][j]   = this.plateau.getPlateau()[iF][jF];
-		this.plateau.getPlateau()[iF][jF] = pSave;
+		return min;
 	}
 	
-	private void afficher(Pieces[][] tabP) {
+	public static long Max (int profondeur, Plateau plat, long max, long min) {
+		if (profondeur == 0) {
+			//System.out.println(dij.Evaluation(gb.joueur1, gb.joueur2));
+			return heuristique(plat);
+		} else {
+			max = -200;
+			ArrayList<Plateau> possible = plat.next();
+			for (int i = 0; i < possible.size(); i++) {
+				//System.out.println(possible.get(i));
+				max = Math.max(max, Min(profondeur-1, possible.get(i), max, min));
+			}
+		}
+		return max;
+	}*/
+	
+	private static long heuristique(Plateau p) {
+		Evaluateur eval = new Evaluateur(p);
+		return eval.evaluation();
+	}
+	
+	/*private void afficher(Pieces[][] tabP) {
 		String str = "";
 		
 		for(int i=0;i<tabP.length;i++) {
@@ -137,5 +112,5 @@ public class IaXiangqi {
 		}
 		
 		System.out.println(str);
-	}
+	}*/
 }

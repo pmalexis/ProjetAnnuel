@@ -14,4 +14,11 @@ public enum Couleur {
 	public char getCouleur() {
 		return this.couleur;
 	}
+	
+	public boolean oppose (Couleur c) {
+		if (this.getCouleur() != c.getCouleur() && this.getCouleur() != ' ') {
+			return true;
+		}
+		return false;
+	}
 }

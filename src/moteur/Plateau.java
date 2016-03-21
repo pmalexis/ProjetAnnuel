@@ -1,12 +1,13 @@
 package moteur;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Plateau {
 
-	private final int LARGEUR = 9;
-	private final int HAUTEUR  = 10;
+	private final static int LARGEUR = 9;
+	private final static int HAUTEUR  = 10;
 	
 	public Pieces plateau[][];
 	
@@ -61,14 +62,14 @@ public class Plateau {
 									{ "TR", "CR", "ER", "GR", "RR", "GR", "ER", "CR", "TR" } };*/
 		
 		String[][] plateauTempo = { { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, 
-									{ "  ", "  ", "  ", "  ", "RN", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "BN", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "RN", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "PN", "PR", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "BR", "  ", "  ", "PR", "  ", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "BR", "  ", "  ", "  ", "  " },
-									{ "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+									{ "  ", "  ", "  ", "  ", "  ", "RR", "  ", "  ", "  " },
 									{ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " } };
 			
 		for(int i = 0; i < plateauTempo.length; i++)
@@ -132,12 +133,15 @@ public class Plateau {
 	 */
 	public boolean jouer(int i, int j, int iF, int jF) {
 		boolean bool = false;
-		
+
+		System.out.println("JOUER");
 		List<Coup> listCoupPossible = this.getListCoupPossible(i, j);
+		//System.out.println(listCoupPossible.size());
 		
-		for(int n=0;n<listCoupPossible.size();n++)
+		for(int n=0;n<listCoupPossible.size();n++) {
 			if(listCoupPossible.get(n).getPosX() == iF && listCoupPossible.get(n).getPosY() == jF)
 				bool = true;
+		}
 
 		if(bool) {
 			this.plateau[iF][jF] = this.plateau[i][j];
@@ -152,37 +156,49 @@ public class Plateau {
 		return bool;
 	}
 	
-	public int[] jouerIA() {
+	public void jouerIA() {
 		IaXiangqi ia = new IaXiangqi(this.getJoueurAct());
-		return ia.jouer(this);
+		this.plateau = Plateau.copyPieces(ia.jouer(this).plateau);
+		this.joueurSuivant();
 	}
 	
-	public boolean estEchec () {
+	public boolean estEchec() {
+		return estEchec(Couleur.Noir) || estEchec(Couleur.Rouge);
+	}
+	
+	public boolean estEchec (Couleur couleur) {
 		
-		int c = 0;
-		int l = 0;
-		boolean res = false;
-		
-		while (this.getCase(c, l).getType() != Type.Roi) {
-			l++;
-			if (l >= this.LARGEUR) {
-				c++;
-				l = 0;
+		Coup c = null;
+		for (int i = 0; i < this.HAUTEUR; i++) {
+			for (int j = 0; j < this.LARGEUR; j++) {
+				Pieces p = this.plateau[i][j];
+				if (p.getType() == Type.Roi && p.getCouleur() == couleur) {
+					c = new Coup(i,j);
+				}
 			}
 		}
 		
-		int cpt = 0;
-		for (int i = c+1; i < this.HAUTEUR; i++) {
-			if (this.getCase(i, l).getType() == Type.Roi) break;
-			if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
+		for (int i = 0; i < this.HAUTEUR; i++) {
+			for (int j = 0; j < this.LARGEUR; j++) {
+				Pieces p = this.plateau[i][j];
+				if (p.getCouleur().oppose(couleur)) {
+					//System.out.println(p.getType() + " :");
+					List<Coup> liste = this.getListCoupPossible(i, j);
+					for (int k = 0; k < liste.size(); k++) {
+						//System.out.println("\t" + liste.get(k));
+						if (liste.get(k).equals(c)) {
+							return true;
+						}
+					}
+				}
+			}
 		}
-		
-		if (cpt == 0) res = true;
-		
-		return res;
+		return false;
 	}
 	
 	public List<Coup> estEchec (Pieces p, List<Coup> listeCoup) {
+		
+		System.out.println(p.getType() + " " + p.getCouleur() + " :\n" + this);
 		
 		for (int k = listeCoup.size()-1; k >= 0; k--) {
 			
@@ -227,38 +243,42 @@ public class Plateau {
 			}
 			Bombardier.test = true;
 			
-			int c = 0;
 			int l = 0;
-			int cpt = 2;
+			int c = 0;
 			boolean res = false;
 			
-			while (this.getCase(c, l).getType() != Type.Roi) {
-				l++;
-				if (l >= this.LARGEUR) {
-					c++;
-					l = 0;
+			/*for (l = 0; l < this.HAUTEUR; l++) {
+				for (c = 0; c < this.LARGEUR; c++) {
+					if (this.getCase(l, c).getType() != Type.Roi) break;
+				}
+			}*/
+			//System.out.println(this);
+			while (this.getCase(l, c).getType() != Type.Roi) {
+				c++;
+				if (c >= this.LARGEUR) {
+					l++;
+					c = 0;
 				}
 			}
-			
-			if (c < 2) {
-				cpt = 0;
-			}
-			for (int i = c+1; i < this.HAUTEUR; i++) {
-				if (this.getCase(i, l).getType() != Type.SansPiece) cpt++;
-				if (this.getCase(i, l).getType() == Type.Roi) break;
+			int i;
+			for (i = l+1; i < this.HAUTEUR-1; i++) {
+				if (this.getCase(i, c).getType() != Type.SansPiece) break;
 			}
 			
-			if (cpt-1 == 0) res = true;
+			if (this.getCase(i, c).getType() == Type.Roi) res = true;
 			
 			this.plateau[listeCoup.get(k).getPosX()][listeCoup.get(k).getPosY()] = save;
 			
 			if (p.getCouleur() == Couleur.Noir && echecN) {
+				System.out.println("noir = " + listeCoup.get(k));
 				listeCoup.remove(k);
 			}
 			if (p.getCouleur() == Couleur.Rouge && echecR) {
+				System.out.println("rouge = " + listeCoup.get(k));
 				listeCoup.remove(k);
 			}
 			if (res) {
+				System.out.println("autre = " + listeCoup.get(k));
 				listeCoup.remove(k);
 			}
 		}
@@ -282,5 +302,59 @@ public class Plateau {
 			str += "\n";
 		}
 		return str;
+	}
+	
+	public static Pieces[][] copyPieces(Pieces[][] plat) {
+		Pieces[][] p = new Pieces[HAUTEUR][LARGEUR];
+		for (int i = 0; i < HAUTEUR; i++) {
+			for (int j = 0; j < LARGEUR; j++) {
+				p[i][j] = plat[i][j];
+			}
+		}
+		return p;
+	}
+
+	public static Plateau copyPlateau(Plateau plat) {
+		Plateau p = new Plateau(plat.joueurUn_IA, plat.joueurDeux_IA);
+		p.joueurActuel = plat.getJoueurAct();
+		for (int i = 0; i < plat.HAUTEUR; i++) {
+			for (int j = 0; j < plat.LARGEUR; j++) {
+				p.plateau[i][j] = plat.plateau[i][j];
+			}
+		}
+		return p;
+	}
+
+	public ArrayList<Plateau> next() {
+		ArrayList<Plateau> coupPossibles = new ArrayList<Plateau>();
+		for (int i = 0; i < this.HAUTEUR; i++) {
+			for (int j = 0; j < this.LARGEUR; j++) {
+				Pieces p = this.plateau[i][j];
+				if (p.getType() != Type.SansPiece && p.getCouleur() == this.getJoueurAct()) {
+					System.out.println("POSSIBLE");
+					List<Coup> coupsPiece = p.getListeCoupPossible(p.getListCoup(), this);
+					for (int k = 0; k < coupsPiece.size(); k++) {
+						Plateau newPlat = copyPlateau(this);
+						System.out.println("NEXT : " + coupsPiece.get(k));
+						newPlat.jouer(i, j, coupsPiece.get(k).getPosX(), coupsPiece.get(k).getPosY());
+						coupPossibles.add(newPlat);
+					}
+				}
+			}
+		}
+		return coupPossibles;
+	}
+	
+	public List<Integer> indexUnitees (Type type, Couleur couleur) {
+		List<Integer> index = new ArrayList<Integer>();
+		for (int i = 0; i < this.HAUTEUR; i++) {
+			for (int j = 0; j < this.LARGEUR; j++) {
+				Pieces p = this.plateau[i][j];
+				if (p.getType() == type && p.getCouleur() == couleur) {
+					index.add(i*9+j);
+				}
+			}
+		}
+		return index;
 	}
 }

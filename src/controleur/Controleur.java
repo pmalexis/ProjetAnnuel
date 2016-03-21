@@ -55,9 +55,7 @@ public class Controleur {
 		return this.plateau.jouer(tabCoord[0], tabCoord[1], tabCoordFinal[0], tabCoordFinal[1]);
 	}
 	
-	public boolean jouerIa() {
-		int[] tabJouer = this.plateau.jouerIA();
-		return false;
-		//return this.plateau.jouer(tabJouer[0], tabJouer[1], tabJouer[2], tabJouer[3]);
+	public void jouerIa() {
+		this.plateau.jouerIA();
 	}
 }

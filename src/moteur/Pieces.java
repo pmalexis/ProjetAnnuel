@@ -75,7 +75,7 @@ public abstract class Pieces {
 	@SuppressWarnings("static-access")
 	public boolean PieceEnnemie(Pieces Autre){
 		System.out.println("Moi :" + this.getCouleur() + "Lui" + Autre.getCouleur() );
-		if(this.getCouleur() != Autre.Couleur && Autre.getCouleur() != Couleur.Aucune){
+		if(this.getCouleur().oppose(Autre.Couleur)){
 			return true;
 		}
 		return false;

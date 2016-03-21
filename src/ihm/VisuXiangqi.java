@@ -192,6 +192,7 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 				}
 				
 				if(!this.firstClick) {
+					System.out.println("IHM");
 					this.listCoupPossible  = this.controleur.getListCoupPossible(this.tabCoord[0], this.tabCoord[1]);
 				}
 			}
@@ -209,12 +210,14 @@ public class VisuXiangqi extends JPanel implements MouseListener, MouseMotionLis
 			this.firstClick       = true;
 			this.listCoupPossible = null;
 		}
+		System.out.println(this.controleur.getJoueurAct());
 		
 		//Si le joueur est un ia, il joue
 		if( (this.controleur.getJoueurAct() == Couleur.Rouge && this.controleur.getJoueurUn_IA() == true) ||
 			(this.controleur.getJoueurAct() == Couleur.Noir && this.controleur.getJoueurDeux_IA() == true) ) {
 			this.controleur.jouerIa();
 		}
+		
 		
 		repaint();
 	}
