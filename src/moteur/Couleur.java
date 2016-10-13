@@ -22,5 +22,3 @@ public enum Couleur {
 		return false;
 	}
 }
-
-// simple démo ;)
